@@ -139,8 +139,11 @@ function randomHeroName()
 echo "Here is the name: " . combineNames();
 
 new_exercise(7);
-function copyright(int $year) {
-    return "&copy; $year BeCode";
+// was probleem met dat year integer moest zijn, terwijl date als string werd doorgestuurd
+function copyright($year) {
+    // return "&copy; $year BeCode";
+    echo "&copy; $year BeCode";
+
 }
 //print the copyright
 copyright(date('Y'));
@@ -148,51 +151,89 @@ copyright(date('Y'));
 new_exercise(8);
 function login(string $email, string $password) {
     if($email == 'john@example.be' || $password == 'pocahontas') {
-        return 'Welcome John';
-        return ' Smith';
+        // edit: ik vind het gemakkelijker, visueler werken met echo
+        // MAAR er was nog een probleem, namelijk of Smith wel zou worden uitgevoerd en daarom heb ik de echo's verplaatstst van in de functie naar het aanroepen van de variabelen die functie op hun beurt aanreoepen 
+        //return 'Welcome John';
+        // echo 'Welcome John';
+        //return ' Smith';
+        // echo ' Smith';
+        // edit: er kan maar 1 return-statement zijn
+        return 'Welcome John Smith';
     }
+    // er was geen else-statement
+    else {
     return 'No access';
+    // echo 'No access';
+}
 }
 //should great the user with his full name (John Smith)
 $login = login('john@example', 'pocahontas');
-//no access
+echo $login;
+//no access edit: want is example.BE of pocahantas
 $login = login('john@example', 'dfgidfgdfg');
+echo $login;
 //no access
 $login = login('wrong@example', 'wrong');
+echo $login;
+
 
 new_exercise(9);
-function isLinkValid(string $link) {
-    $unacceptables = array('https:','.doc','.pdf', '.jpg', '.jpeg', '.gif', '.bmp', '.png');
-
+// edit: groot deel van oplossing op basis van http://www.hackingwithphp.com/4/7/5/finding-a-string-within-a-string
+function isLinkValid(string $link)
+{
+    $unacceptables = array('https:', '.doc', '.pdf', '.jpg', '.jpeg', '.gif', '.bmp', '.png');
     foreach ($unacceptables as $unacceptable) {
-        if (strpos($link, $unacceptable) == true) {
+        // var_dump($unacceptable);
+        // var_dump($link);
+        // var_dump(strpos($link, $unacceptable));
+        if (strpos($link, $unacceptable) !== false) {
+            // echo 'Unacceptable   Found<br />';
             return 'Unacceptable Found<br />';
-        }
+            }
     }
+// edit: die returns zijn ambetant, want ze stoppen de boel. ik dacht oorspronkelijk met if en else te moeten werken, maar deze structuur is prima, net omdat return de boel stopt
     return 'Acceptable<br />';
 }
+
 //invalid link
-isLinkValid('http://www.google.com/hack.pdf');
-//invalid link
-isLinkValid('https://google.com');
+// isLinkValid('http://www.google.com/hack.pdf');
+$test1 = isLinkValid('http://www.google.com/hack.pdf');
+echo $test1;
+//invalid link 
+// isLinkValid('https://google.com');
+$test2 = isLinkValid('https://google.com');
+echo $test2;
 //VALID link
-isLinkValid('http://google.com');
+// isLinkValid('http://google.com');
+$test3 = isLinkValid('http://google.com');
+echo $test3;
 //VALID link
-isLinkValid('http://google.com/test.txt');
+// isLinkValid('http://google.com/test.txt');
+$test4 = isLinkValid('http://google.com/test.txt');
+echo $test4;
 
 
 new_exercise(10);
-
 //Filter the array $areTheseFruits to only contain valid fruits
 //do not change the arrays itself
 $areTheseFruits = ['apple', 'bear', 'beef', 'banana', 'cherry', 'tomato', 'car'];
 $validFruits = ['apple', 'pear', 'banana', 'cherry', 'tomato'];
 //from here on you can change the code
-for($i=0; $i <= count($areTheseFruits); $i++) {
+// echo count($areTheseFruits);
+// moeten vastzetten in variabele, want die unset fuckte met de lengte van de array
+$fixed_count = count($areTheseFruits);
+// edit: zero-indexed dus < i.p.v. <= gebruikt
+for($i=0; $i < $fixed_count; $i++) {
+    // echo $i;
+    // echo $areTheseFruits[$i];
     if(!in_array($areTheseFruits[$i], $validFruits)) {
+        // echo "NOPE";
+        // echo ($areTheseFruits[$i]);
+        // probleem, denk ik : wordt uit de array gegooid om dan weer de loop te gaan bevolken ..
+        // nu was de debugger xdebug in IDE wel interessant omdat het toonde hoe de variabele in lengte wel minder werd, doch de verschillende elementen bleven hun indexnummer behouden!
         unset($areTheseFruits[$i]);
+        
     }
 }
 var_dump($areTheseFruits);//do not change this
-
 ?>
